@@ -1,0 +1,1 @@
+ALTER TABLE `foods` DROP COLUMN `fiber_100`;

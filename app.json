@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "macro-tracker",
+    "name": "Macro Tracker",
     "slug": "macro-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -20,7 +20,7 @@
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "output": "server",
+      "output": "single",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
@@ -31,6 +31,14 @@
           "backgroundColor": "#208AEF",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
+        }
+      ],
+      "expo-sqlite",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to use your camera to scan food barcodes.",
+          "recordAudioAndroid": false
         }
       ]
     ],
