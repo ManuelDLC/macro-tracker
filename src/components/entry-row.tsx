@@ -1,7 +1,7 @@
 import { Pressable, View } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 
-import { MacroLine } from '@/components/macro-line';
+import { MacroBits } from '@/components/macro-bits';
 import { ThemedText } from '@/components/themed-text';
 import type { DayEntry } from '@/db/repo';
 
@@ -30,19 +30,13 @@ export function EntryRow({ entry, onPress, onDelete }: Props) {
           </ThemedText>
         </Pressable>
       )}>
-      <View className="bg-background-element">
-        <Pressable
-          onPress={onPress}
-          className="flex-row items-center gap-2 px-4 py-3 active:opacity-60">
-          <View className="flex-1">
-            <ThemedText numberOfLines={1}>{entry.name}</ThemedText>
-            <MacroLine macros={entry} numberOfLines={1} />
-          </View>
-          <ThemedText type="small" className="text-foreground-secondary">
-            {Math.round(entry.grams)} g
-          </ThemedText>
-        </Pressable>
-      </View>
+      <Pressable onPress={onPress} className="flex-row items-center gap-3 py-2 active:opacity-60 bg-background-element">
+        <View className="flex-1">
+          <ThemedText numberOfLines={1}>{entry.name}</ThemedText>
+          <MacroBits macros={entry} grams={entry.grams} />
+        </View>
+        <ThemedText className="font-bold">{Math.round(entry.kcal)}</ThemedText>
+      </Pressable>
     </Swipeable>
   );
 }

@@ -11,6 +11,7 @@ export const foods = sqliteTable('foods', {
   carbs100: real('carbs_100').notNull(),
   fat100: real('fat_100').notNull(),
   servingGrams: real('serving_grams'),
+  favorite: integer('favorite', { mode: 'boolean' }).notNull().default(false),
   source: text('source', { enum: ['off', 'custom'] }).notNull(),
   createdAt: integer('created_at', { mode: 'timestamp' })
     .notNull()

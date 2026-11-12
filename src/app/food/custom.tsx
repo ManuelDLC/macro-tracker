@@ -20,7 +20,7 @@ const MACRO_FIELDS: { key: MacroField; label: string; suffix: string }[] = [
 ];
 
 export default function CustomFoodScreen() {
-  const params = useLocalSearchParams<{ barcode?: string; name?: string }>();
+  const params = useLocalSearchParams<{ barcode?: string; name?: string; meal?: string }>();
   const barcode = params.barcode?.trim() || null;
 
   const [name, setName] = useState(params.name ?? '');
@@ -67,7 +67,7 @@ export default function CustomFoodScreen() {
         servingGrams: hasServing ? serving : null,
         source: 'custom',
       });
-      router.replace({ pathname: '/food/[id]', params: { id: String(id) } });
+      router.replace({ pathname: '/food/[id]', params: { id: String(id), meal: params.meal } });
     } catch (e) {
       Alert.alert('Could not save food', (e as Error).message);
       setSaving(false);

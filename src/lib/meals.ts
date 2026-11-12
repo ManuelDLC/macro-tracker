@@ -1,4 +1,8 @@
-import type { Meal } from '@/db/schema';
+import { MEALS, type Meal } from '@/db/schema';
+
+export function isMeal(value: string | undefined): value is Meal {
+  return MEALS.includes(value as Meal);
+}
 
 export function defaultMealForTime(d: Date = new Date()): Meal {
   const minutes = d.getHours() * 60 + d.getMinutes();

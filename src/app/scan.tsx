@@ -1,5 +1,5 @@
 import { useCameraPermissions, type BarcodeScanningResult } from 'expo-camera';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useRef, useState } from 'react';
 import { ActivityIndicator, Linking, View } from 'react-native';
 
@@ -20,6 +20,7 @@ type ScanState =
   | { kind: 'error'; barcode: string; message: string };
 
 export default function ScanScreen() {
+  const { meal } = useLocalSearchParams<{ meal?: string }>();
   const [permission, requestPermission] = useCameraPermissions();
   const [state, setState] = useState<ScanState>({ kind: 'scanning' });
   // Camera callbacks fire many times per second; a ref blocks re-entry before state updates land.
@@ -30,9 +31,9 @@ export default function ScanScreen() {
     try {
       const result = await lookupBarcode(barcode);
       if (result.status === 'found') {
-        router.replace({ pathname: '/food/[id]', params: { id: String(result.foodId) } });
+        router.replace({ pathname: '/food/[id]', params: { id: String(result.foodId), meal } });
       } else {
-        router.replace({ pathname: '/food/custom', params: { barcode: result.barcode } });
+        router.replace({ pathname: '/food/custom', params: { barcode: result.barcode, meal } });
       }
     } catch (e) {
       const message =

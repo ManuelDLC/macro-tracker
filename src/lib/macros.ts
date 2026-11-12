@@ -54,3 +54,22 @@ export function progress(value: number, goal: number): number {
   if (!(goal > 0)) return 0;
   return Math.min(1, Math.max(0, value / goal));
 }
+
+/** 4 kcal per gram of protein or carbs, 9 kcal per gram of fat. */
+export function energyFromMacros(protein: number, carbs: number, fat: number): number {
+  return protein * 4 + carbs * 4 + fat * 9;
+}
+
+/** Carbs (g) that make protein, carbs, and fat add up to the calorie goal. Never negative. */
+export function carbsForCalorieGoal(kcal: number, protein: number, fat: number): number {
+  return Math.max(0, Math.round((kcal - protein * 4 - fat * 9) / 4));
+}
+
+export function formatAmount(n: number): string {
+  const rounded = round1(n);
+  return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+}
+
+export function formatKcal(n: number): string {
+  return Math.round(n).toLocaleString();
+}

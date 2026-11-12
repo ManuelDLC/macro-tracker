@@ -4,31 +4,35 @@
 @layer theme {
   :root {
     @variant light {
-      --color-foreground: #000000;
-      --color-foreground-secondary: #60646c;
-      --color-background: #ffffff;
-      --color-background-element: #f0f0f3;
-      --color-background-selected: #e0e1e6;
+      --color-foreground: #111113;
+      --color-foreground-secondary: #6b6e76;
+      --color-background: #f3f3f5;
+      --color-background-element: #ffffff;
+      --color-background-selected: #e6e6ea;
+      --color-warning: #8a5a00;
+      --color-warning-surface: #fff4d6;
     }
 
     @variant dark {
       --color-foreground: #ffffff;
-      --color-foreground-secondary: #b0b4ba;
+      --color-foreground-secondary: #9b9ba3;
       --color-background: #000000;
-      --color-background-element: #212225;
-      --color-background-selected: #2e3135;
+      --color-background-element: #1a1c1f;
+      --color-background-selected: #2a2c31;
+      --color-warning: #e6b450;
+      --color-warning-surface: #2c2616;
     }
   }
 }
 
 @theme {
-  --color-primary: #208aef;
-  --color-danger: #e5484d;
+  --color-primary: #2f6fed;
+  --color-danger: #ff5d5d;
 
-  --color-kcal: #208aef;
-  --color-protein: #e5484d;
-  --color-carbs: #f5a524;
-  --color-fat: #30a46c;
+  --color-kcal: #2f6fed;
+  --color-protein: #ff5d5d;
+  --color-carbs: #f5b400;
+  --color-fat: #8d7dff;
 }
 
 @utility h-hairline {

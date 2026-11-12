@@ -1,4 +1,4 @@
-import { desc, eq, max } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 
 import { scaleMacros, sumMacros, type Macros } from '@/lib/macros';
 
@@ -51,20 +51,55 @@ export async function upsertFood(food: NewFood): Promise<number> {
   return row.id;
 }
 
-/** Most recently logged foods, newest first. */
-export function recentFoodsQuery(limit = 15) {
+const foodListColumns = {
+  id: foods.id,
+  name: foods.name,
+  brand: foods.brand,
+  kcal100: foods.kcal100,
+  protein100: foods.protein100,
+  carbs100: foods.carbs100,
+  fat100: foods.fat100,
+  servingGrams: foods.servingGrams,
+  favorite: foods.favorite,
+};
+
+/** Newest log entries. Callers keep the first row per food. */
+export function recentFoodsQuery(limit = 40) {
   return db
     .select({
-      id: foods.id,
-      name: foods.name,
-      brand: foods.brand,
-      kcal100: foods.kcal100,
+      ...foodListColumns,
+      grams: logEntries.grams,
+      kcal: logEntries.kcal,
+      protein: logEntries.protein,
+      carbs: logEntries.carbs,
+      fat: logEntries.fat,
     })
     .from(logEntries)
     .innerJoin(foods, eq(logEntries.foodId, foods.id))
-    .groupBy(foods.id)
-    .orderBy(desc(max(logEntries.id)))
+    .orderBy(desc(logEntries.id))
     .limit(limit);
+}
+
+export function myFoodsQuery(limit = 50) {
+  return db
+    .select(foodListColumns)
+    .from(foods)
+    .where(eq(foods.source, 'custom'))
+    .orderBy(desc(foods.id))
+    .limit(limit);
+}
+
+export function favoriteFoodsQuery(limit = 50) {
+  return db
+    .select(foodListColumns)
+    .from(foods)
+    .where(eq(foods.favorite, true))
+    .orderBy(desc(foods.id))
+    .limit(limit);
+}
+
+export async function setFoodFavorite(id: number, favorite: boolean) {
+  await db.update(foods).set({ favorite }).where(eq(foods.id, id));
 }
 
 // ---------- Log entries ----------

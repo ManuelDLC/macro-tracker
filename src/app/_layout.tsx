@@ -4,8 +4,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { useColorScheme, View } from 'react-native';
+import { useCSSVariable } from 'uniwind';
 
 import migrations from '../../drizzle/migrations';
 import { StyledGestureHandlerRootView } from '@/components/styled';
@@ -23,6 +25,10 @@ const queryClient = new QueryClient({
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const { success, error } = useMigrations(db, migrations);
+  const [background, foreground] = useCSSVariable([
+    '--color-background',
+    '--color-foreground',
+  ]) as string[];
 
   useEffect(() => {
     if (success || error) SplashScreen.hideAsync();
@@ -45,13 +51,20 @@ export default function RootLayout() {
     <StyledGestureHandlerRootView className="flex-1">
       <QueryClientProvider client={queryClient}>
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack>
+          <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+          <Stack
+            screenOptions={{
+              headerStyle: { backgroundColor: background },
+              headerTintColor: foreground,
+              contentStyle: { backgroundColor: background },
+            }}>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="add" options={{ headerShown: false, presentation: 'modal' }} />
             <Stack.Screen
               name="scan"
               options={{ title: 'Scan barcode', presentation: 'fullScreenModal', headerShown: false }}
             />
-            <Stack.Screen name="food/[id]" options={{ title: 'Add food' }} />
+            <Stack.Screen name="food/[id]" options={{ headerShown: false }} />
             <Stack.Screen name="food/custom" options={{ title: 'Custom food' }} />
             <Stack.Screen
               name="entry/[id]"

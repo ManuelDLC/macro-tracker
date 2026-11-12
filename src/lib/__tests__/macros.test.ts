@@ -1,6 +1,13 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { progress, roundMacros, scaleMacros, sumMacros } from '../macros';
+import {
+  carbsForCalorieGoal,
+  energyFromMacros,
+  progress,
+  roundMacros,
+  scaleMacros,
+  sumMacros,
+} from '../macros';
 
 const oats = { kcal100: 389, protein100: 16.9, carbs100: 66.3, fat100: 6.9 };
 
@@ -44,6 +51,22 @@ describe('roundMacros', () => {
       carbs: 26.5,
       fat: 2.7,
     });
+  });
+});
+
+describe('energyFromMacros', () => {
+  it('uses 4 kcal/g for protein and carbs and 9 kcal/g for fat', () => {
+    expect(energyFromMacros(150, 200, 65)).toBe(1985);
+  });
+});
+
+describe('carbsForCalorieGoal', () => {
+  it('solves for the carbs that make macros match the calorie goal', () => {
+    expect(carbsForCalorieGoal(1900, 150, 65)).toBe(179);
+  });
+
+  it('never returns negative carbs', () => {
+    expect(carbsForCalorieGoal(100, 150, 65)).toBe(0);
   });
 });
 

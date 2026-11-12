@@ -26,7 +26,7 @@ export function Button({ title, variant = 'primary', loading, disabled, classNam
       accessibilityRole="button"
       disabled={disabled || loading}
       className={cn(
-        'min-h-11 px-4 rounded-2xl items-center justify-center active:opacity-80 disabled:opacity-50',
+        'min-h-12 px-4 rounded-full items-center justify-center active:opacity-80 disabled:opacity-50',
         classes.container,
         className,
       )}
